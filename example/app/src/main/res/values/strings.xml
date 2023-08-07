@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Zap Example</string>
+    <string name="as_display">As display</string>
+    <string name="as_controller">As controller</string>
+</resources>
