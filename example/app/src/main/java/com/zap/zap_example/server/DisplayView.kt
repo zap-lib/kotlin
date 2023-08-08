@@ -1,4 +1,4 @@
-package com.zap.zap_example
+package com.zap.zap_example.server
 
 import android.content.Context
 import android.graphics.Canvas

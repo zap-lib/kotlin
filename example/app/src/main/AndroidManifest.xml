@@ -14,10 +14,10 @@
         android:theme="@style/Theme.ZapExample"
         tools:targetApi="31">
         <activity
-            android:name=".ControllerActivity"
+            android:name=".client.ControllerActivity"
             android:exported="false" />
         <activity
-            android:name=".DisplayActivity"
+            android:name=".server.DisplayActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -29,8 +29,8 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".ClientService" />
-        <service android:name=".ServerService" />
+        <service android:name=".client.ClientService" />
+        <service android:name=".server.ServerService" />
     </application>
 
 </manifest>

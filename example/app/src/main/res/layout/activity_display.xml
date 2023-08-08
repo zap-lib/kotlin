@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DisplayActivity">
+    tools:context=".server.DisplayActivity">
 
-    <com.zap.zap_example.DisplayView
+    <com.zap.zap_example.server.DisplayView
         android:id="@+id/display"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

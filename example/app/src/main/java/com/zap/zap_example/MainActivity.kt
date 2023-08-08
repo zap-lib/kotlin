@@ -4,6 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import com.zap.zap_example.client.ClientService
+import com.zap.zap_example.client.ControllerActivity
+import com.zap.zap_example.server.DisplayActivity
+import com.zap.zap_example.server.ServerService
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,18 +16,12 @@ class MainActivity : AppCompatActivity() {
 
         val displayButton = findViewById<Button>(R.id.displayButton)
         displayButton.setOnClickListener {
-            if (!ServerService.isWorking.get()) {
-                startService(Intent(this, ServerService::class.java))
-            }
-
             startActivity(Intent(this, DisplayActivity::class.java))
         }
 
         val controllerButton = findViewById<Button>(R.id.controllerButton)
         controllerButton.setOnClickListener {
-            if (!ClientService.isWorking.get()) {
-                startService(Intent(this, ClientService::class.java))
-            }
+            startActivity(Intent(this, ControllerActivity::class.java))
         }
     }
 }
