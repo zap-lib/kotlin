@@ -36,10 +36,10 @@ class ServerService : Service() {
                                 try {
                                     if (inputStream.available() > 0) {
                                         val received = inputStream.readUTF()
-                                        Log.i(TAG, received.toString())
                                         received?.let { value -> binder.changed(value) }
-                                        sleep(1000L)
                                     }
+
+                                    sleep(30L)
                                 } catch (e: Exception) {
                                     inputStream.close()
                                     outputStream.close()

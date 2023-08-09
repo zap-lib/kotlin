@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".server.DisplayActivity">
 
-    <com.zap.zap_example.server.DisplayView
-        android:id="@+id/display"
+    <com.zap.zap_example.views.PlaygroundView
+        android:id="@+id/playground"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
