@@ -3,6 +3,7 @@ package com.zap.zap_example
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Paint
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -22,7 +23,7 @@ class ControllerActivity : AppCompatActivity(), SensorEventListener {
         setContentView(R.layout.activity_controller)
 
         control = findViewById(R.id.playground)
-        control.paint.color = Color.BLUE
+        control.add(POINTER_ID, Paint().apply { color = Color.BLUE })
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
@@ -31,8 +32,8 @@ class ControllerActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-            ObjectAnimator.ofFloat(control, "translationX", event.values[0] * -20).apply { duration = 30 }.start()
-            ObjectAnimator.ofFloat(control, "translationY", event.values[1] * 20).apply { duration = 30 }.start()
+            ObjectAnimator.ofFloat(control.get(POINTER_ID), "x", event.values[0] * -20).apply { duration = 30 }.start()
+            ObjectAnimator.ofFloat(control.get(POINTER_ID), "y", event.values[1] * 20).apply { duration = 30 }.start()
             zap.send(event.values.joinToString(","))
         }
     }
@@ -47,5 +48,9 @@ class ControllerActivity : AppCompatActivity(), SensorEventListener {
     override fun onStop() {
         super.onStop()
         sensorManager.unregisterListener(this)
+    }
+
+    companion object {
+        private const val POINTER_ID = "0"
     }
 }
