@@ -44,8 +44,8 @@ class ControllerActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-            ObjectAnimator.ofFloat(control, "translationX", event.values[0] * -50).apply { duration = 30 }.start()
-            ObjectAnimator.ofFloat(control, "translationY", event.values[1] * 50).apply { duration = 30 }.start()
+            ObjectAnimator.ofFloat(control, "translationX", event.values[0] * -20).apply { duration = 30 }.start()
+            ObjectAnimator.ofFloat(control, "translationY", event.values[1] * 20).apply { duration = 30 }.start()
             service?.send(event.values.joinToString(","))
         }
     }

@@ -7,52 +7,24 @@ import android.os.RemoteCallbackList
 import android.util.Log
 import com.zap.zap_example.RemoteCallback
 import com.zap.zap_example.RemoteListener
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.net.ServerSocket
-import java.net.Socket
+import java.net.DatagramPacket
+import java.net.DatagramSocket
 import java.util.concurrent.atomic.AtomicBoolean
 
 class ServerService : Service() {
-    private var serverSocket: ServerSocket? = null
     private val callbacks = RemoteCallbackList<RemoteCallback>()
 
-    private val runnable = Runnable {
-        var socket: Socket? = null
+    private val runnable = Thread {
+        val socket = DatagramSocket(PORT)
+        val buffer = ByteArray(2048)
+        val packet = DatagramPacket(buffer, buffer.size)
 
-        try {
-            serverSocket = ServerSocket(PORT)
-
-            while (isWorking.get()) {
-                serverSocket?.let {
-                    socket = it.accept()
-
-                    val inputStream = DataInputStream(socket?.getInputStream())
-                    val outputStream = DataOutputStream(socket?.getOutputStream())
-
-                    object : Thread() {
-                        override fun run() {
-                            while (true) {
-                                try {
-                                    if (inputStream.available() > 0) {
-                                        val received = inputStream.readUTF()
-                                        received?.let { value -> binder.changed(value) }
-                                    }
-
-                                    sleep(30L)
-                                } catch (e: Exception) {
-                                    inputStream.close()
-                                    outputStream.close()
-                                    throw e
-                                }
-                            }
-                        }
-                    }.start()
-                }
+        if (isWorking.get()) {
+            while (true) {
+                socket.receive(packet)
+                binder.changed(packet.data.decodeToString())
+                Thread.sleep(30L)
             }
-        } catch (e: Exception) {
-            socket?.close()
-            throw e
         }
     }
 
@@ -79,7 +51,7 @@ class ServerService : Service() {
     override fun onCreate() {
         Log.i(TAG, "server service created")
         isWorking.set(true)
-        Thread(runnable).start()
+        runnable.start()
     }
 
     override fun onDestroy() {
@@ -89,6 +61,6 @@ class ServerService : Service() {
     companion object {
         val isWorking = AtomicBoolean(false)
         private val TAG = ServerService::class.java.simpleName
-        private const val PORT = 9876
+        private const val PORT = 65500
     }
 }

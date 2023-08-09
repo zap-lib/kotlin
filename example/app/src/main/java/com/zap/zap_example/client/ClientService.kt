@@ -6,27 +6,25 @@ import android.os.Binder
 import android.os.IBinder
 import android.util.Log
 import com.zap.zap_example.server.ServerService
-import java.io.DataInputStream
-import java.io.DataOutputStream
+import java.net.DatagramPacket
+import java.net.DatagramSocket
 import java.net.InetAddress
-import java.net.Socket
 import java.util.concurrent.atomic.AtomicBoolean
 
 class ClientService : Service() {
-    private val runnable = Runnable {
-        val socket = Socket(IP, PORT)
-        val inputStream = DataInputStream(socket.getInputStream())
-        val outputStream = DataOutputStream(socket.getOutputStream())
+    private val runnable = Thread {
+        val socket = DatagramSocket()
 
-        try {
-            while (isWorking.get()) {
-                valueToSend?.let { outputStream.writeUTF(it) }
+        if (isWorking.get()) {
+            while (true) {
+                valueToSend?.let {
+                    val bytes = it.toByteArray()
+                    val packet = DatagramPacket(bytes, bytes.size, IP, PORT)
+                    socket.send(packet)
+                }
+
                 Thread.sleep(30L)
             }
-        } catch (e: Exception) {
-            inputStream.close()
-            outputStream.close()
-            throw e
         }
     }
 
@@ -47,7 +45,7 @@ class ClientService : Service() {
     override fun onCreate() {
         Log.i(TAG, "client service created")
         isWorking.set(true)
-        Thread(runnable).start()
+        runnable.start()
     }
 
     override fun onDestroy() {
@@ -58,6 +56,6 @@ class ClientService : Service() {
         val isWorking = AtomicBoolean(false)
         private val TAG = ServerService::class.java.simpleName
         private val IP = InetAddress.getByName("192.168.0.27")
-        private const val PORT = 9876
+        private const val PORT = 65500
     }
 }
