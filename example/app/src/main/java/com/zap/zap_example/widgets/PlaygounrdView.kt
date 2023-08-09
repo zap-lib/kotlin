@@ -1,4 +1,4 @@
-package com.zap.zap_example.views
+package com.zap.zap_example.widgets
 
 import android.content.Context
 import android.graphics.Canvas
@@ -23,6 +23,12 @@ class PlaygroundView : View {
     }
 
     override fun onDraw(canvas: Canvas) {
+        if (px < 0) px = 0f
+        if (py < 0) py = 0f
+
+        if (px > width) px = width.toFloat()
+        if (py > height) py = height.toFloat()
+
         canvas.drawCircle(px, py, 30f, paint)
         invalidate()
     }

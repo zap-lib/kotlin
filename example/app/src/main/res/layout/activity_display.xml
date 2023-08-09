@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".server.DisplayActivity">
+    tools:context=".DisplayActivity">
 
-    <com.zap.zap_example.views.PlaygroundView
+    <com.zap.zap_example.widgets.PlaygroundView
         android:id="@+id/playground"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

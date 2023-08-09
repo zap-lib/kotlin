@@ -1,11 +1,10 @@
-package com.zap.zap_example.client
+package com.zap.zap_example.lib
 
 import android.app.Service
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
-import com.zap.zap_example.server.ServerService
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress

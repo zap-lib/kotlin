@@ -1,4 +1,4 @@
-package com.zap.zap_example.server
+package com.zap.zap_example.lib
 
 import android.app.Service
 import android.content.Intent

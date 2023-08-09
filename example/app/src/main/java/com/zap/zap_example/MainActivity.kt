@@ -4,10 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import com.zap.zap_example.client.ClientService
-import com.zap.zap_example.client.ControllerActivity
-import com.zap.zap_example.server.DisplayActivity
-import com.zap.zap_example.server.ServerService
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
