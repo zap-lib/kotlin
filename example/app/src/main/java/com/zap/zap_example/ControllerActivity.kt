@@ -1,6 +1,5 @@
 package com.zap.zap_example
 
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Paint
@@ -32,8 +31,8 @@ class ControllerActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-            ObjectAnimator.ofFloat(control.get(POINTER_ID), "x", event.values[0] * -20).apply { duration = 30 }.start()
-            ObjectAnimator.ofFloat(control.get(POINTER_ID), "y", event.values[1] * 20).apply { duration = 30 }.start()
+            control.x = event.values[0] * -30
+            control.y = event.values[1] * 30
             zap.send(event.values.joinToString(","))
         }
     }

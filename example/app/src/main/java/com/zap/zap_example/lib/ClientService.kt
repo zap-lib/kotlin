@@ -53,7 +53,7 @@ class ClientService : Service() {
 
     companion object {
         val isWorking = AtomicBoolean(false)
-        private val TAG = ServerService::class.java.simpleName
+        private val TAG = ClientService::class.java.simpleName
         private val IP = InetAddress.getByName("192.168.0.27")
         private const val PORT = 65500
     }

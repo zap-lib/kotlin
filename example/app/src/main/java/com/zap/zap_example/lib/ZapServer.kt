@@ -1,34 +1,51 @@
 package com.zap.zap_example.lib
 
-import android.app.Activity
-import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
-import android.os.IBinder
-import com.zap.zap_example.RemoteCallback
-import com.zap.zap_example.RemoteListener
+import android.util.Log
+import java.net.DatagramPacket
+import java.net.DatagramSocket
+import java.util.concurrent.atomic.AtomicBoolean
 
-class ZapServer(ctx: Context) {
-    private val context: Context = ctx
+data class ZapGps(val latitude: Float, val longitude: Float)
+data class ZapAccelerometer(val x: Float, val y: Float, val z: Float)
 
-    fun listen(f: (String) -> Unit) {
-        val callback = object : RemoteCallback.Stub() {
-            override fun onChanged(value: String) = f(value)
+open class ZapServer {
+    private var id = "unknown"
+    private var isRunning = AtomicBoolean(false)
+
+    private val runnable = Thread {
+        val socket = DatagramSocket(PORT)
+        val buffer = ByteArray(2048)
+        val packet = DatagramPacket(buffer, buffer.size)
+
+        while (true) {
+            socket.receive(packet)
+            // TODO: Check the resource type
+            onAccelerometerChanged(id, packet.data.decodeToString())
+            Thread.sleep(30L)
         }
+    }
 
-        var listener: RemoteListener? = null
-        val connection = object : ServiceConnection {
-            override fun onServiceConnected(p0: ComponentName?, service: IBinder?) {
-                listener = RemoteListener.Stub.asInterface(service)
-                listener?.registerCallback(callback)
-            }
-            override fun onServiceDisconnected(p0: ComponentName?) {
-                listener?.unregisterCallback(callback)
-                listener = null
-            }
-        }
+    fun start() {
+        isRunning = AtomicBoolean(true)
+        runnable.start()
+    }
 
-        context.bindService(Intent(context, ServerService::class.java), connection, Context.BIND_AUTO_CREATE)
+    fun stop() {
+        isRunning = AtomicBoolean(false)
+        runnable.interrupt()
+    }
+
+    open fun onGpsChanged(id: String, value: ZapGps) {
+        Log.w(TAG, "Not yet implemented")
+    }
+
+    open fun onAccelerometerChanged(id: String, value: String) {
+        Log.w(TAG, "Not yet implemented")
+    }
+
+    companion object {
+        private val TAG = ZapServer::class.java.simpleName
+        private const val PORT = 65500
     }
 }

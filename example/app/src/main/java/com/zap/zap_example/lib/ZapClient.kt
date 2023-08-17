@@ -21,6 +21,7 @@ class ZapClient(ctx: Context) {
                 service = null
             }
         }
+
         Intent(context, ClientService::class.java).also { intent ->
             context.bindService(intent, connection, AppCompatActivity.BIND_AUTO_CREATE)
         }
