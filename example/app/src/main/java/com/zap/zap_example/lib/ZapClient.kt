@@ -1,33 +1,46 @@
 package com.zap.zap_example.lib
 
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
-import android.os.IBinder
-import androidx.appcompat.app.AppCompatActivity
+import java.net.DatagramPacket
+import java.net.DatagramSocket
+import java.net.InetAddress
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
 
-class ZapClient(ctx: Context) {
-    private var context: Context = ctx
-    private var service: ClientService? = null
+class ZapClient {
+    private var isRunning = AtomicBoolean(false)
+    private var value = AtomicReference<String?>(null)
+    private val thread = Thread {
+        val socket = DatagramSocket()
 
-    init {
-        val connection = object : ServiceConnection {
-            override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
-                service = (binder as ClientService.LocalBinder).service
+        while (isRunning.get()) {
+            value.get()?.let {
+                val bytes = it.toByteArray()
+                val packet = DatagramPacket(bytes, bytes.size, IP, PORT)
+                socket.send(packet)
             }
 
-            override fun onServiceDisconnected(p0: ComponentName?) {
-                service = null
-            }
-        }
-
-        Intent(context, ClientService::class.java).also { intent ->
-            context.bindService(intent, connection, AppCompatActivity.BIND_AUTO_CREATE)
+            value = AtomicReference(null)
+            Thread.sleep(30L)
         }
     }
 
-    fun send(value: String) {
-        service?.send(value)
+    fun start() {
+        isRunning.set(true)
+        thread.start()
+    }
+
+    fun stop() {
+        isRunning.set(false)
+        thread.interrupt()
+    }
+
+    fun send(nvalue: String) {
+        value.set(nvalue)
+    }
+
+    companion object {
+        private val TAG = ZapClient::class.java.simpleName
+        private val IP = InetAddress.getByName("192.168.0.27")
+        private const val PORT = 65500
     }
 }

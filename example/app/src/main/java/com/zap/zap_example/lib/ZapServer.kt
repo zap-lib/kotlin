@@ -1,6 +1,5 @@
 package com.zap.zap_example.lib
 
-import android.content.Context
 import android.util.Log
 import java.net.DatagramPacket
 import java.net.DatagramSocket
@@ -13,7 +12,7 @@ open class ZapServer {
     private var id = "unknown"
     private var isRunning = AtomicBoolean(false)
 
-    private val runnable = Thread {
+    private val thread = Thread {
         val socket = DatagramSocket(PORT)
         val buffer = ByteArray(2048)
         val packet = DatagramPacket(buffer, buffer.size)
@@ -27,13 +26,13 @@ open class ZapServer {
     }
 
     fun start() {
-        isRunning = AtomicBoolean(true)
-        runnable.start()
+        isRunning.set(true)
+        thread.start()
     }
 
     fun stop() {
-        isRunning = AtomicBoolean(false)
-        runnable.interrupt()
+        isRunning.set(false)
+        thread.interrupt()
     }
 
     open fun onGpsChanged(id: String, value: ZapGps) {

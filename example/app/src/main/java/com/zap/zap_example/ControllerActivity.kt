@@ -26,7 +26,7 @@ class ControllerActivity : AppCompatActivity(), SensorEventListener {
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-        zap = ZapClient(this)
+        zap = ZapClient().also { it.start() }
     }
 
     override fun onSensorChanged(event: SensorEvent) {
@@ -47,6 +47,7 @@ class ControllerActivity : AppCompatActivity(), SensorEventListener {
     override fun onStop() {
         super.onStop()
         sensorManager.unregisterListener(this)
+        zap.stop()
     }
 
     companion object {
