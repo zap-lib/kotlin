@@ -3,44 +3,29 @@ package com.zap.zap_example.lib
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
-import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 
 class ZapClient {
-    private var isRunning = AtomicBoolean(false)
-    private var value = AtomicReference<String?>(null)
-    private val thread = Thread {
-        val socket = DatagramSocket()
+    private val socket = DatagramSocket()
+    private val value = AtomicReference<ZapData>()
 
-        while (isRunning.get()) {
-            value.get()?.let {
-                val bytes = it.toByteArray()
-                val packet = DatagramPacket(bytes, bytes.size, IP, PORT)
-                socket.send(packet)
-            }
+    fun send(rvalue: ZapData) {
+        value.set(rvalue)
 
-            value = AtomicReference(null)
-            Thread.sleep(30L)
-        }
-    }
-
-    fun start() {
-        isRunning.set(true)
-        thread.start()
+        Thread {
+            val bytes = value.get().toJson().toByteArray()
+            val packet = DatagramPacket(bytes, bytes.size, IP, PORT)
+            socket.send(packet)
+        }.start()
     }
 
     fun stop() {
-        isRunning.set(false)
-        thread.interrupt()
-    }
-
-    fun send(nvalue: String) {
-        value.set(nvalue)
+        socket.close()
     }
 
     companion object {
         private val TAG = ZapClient::class.java.simpleName
-        private val IP = InetAddress.getByName("192.168.0.27")
+        private val IP = InetAddress.getByName("192.168.0.22")
         private const val PORT = 65500
     }
 }

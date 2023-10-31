@@ -10,6 +10,8 @@ import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.zap.zap_example.lib.ZapClient
+import com.zap.zap_example.lib.ZapData
+import com.zap.zap_example.lib.ZapResource
 import com.zap.zap_example.widgets.PlaygroundView
 
 class ControllerActivity : AppCompatActivity(), SensorEventListener {
@@ -26,14 +28,14 @@ class ControllerActivity : AppCompatActivity(), SensorEventListener {
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-        zap = ZapClient().also { it.start() }
+        zap = ZapClient()
     }
 
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
             control.x = event.values[0] * -30
             control.y = event.values[1] * 30
-            zap.send(event.values.joinToString(","))
+            zap.send(ZapData(ZapResource.ACCELEROMETER, event.values.joinToString(",")))
         }
     }
 
