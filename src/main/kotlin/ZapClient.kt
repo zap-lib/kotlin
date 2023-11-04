@@ -7,16 +7,18 @@ import java.util.concurrent.atomic.AtomicReference
 
 class ZapClient(private val serverAddress: InetAddress) {
     private val socket = DatagramSocket()
-    private val value = AtomicReference<ZapData>()
+    private val isSending = AtomicReference<Boolean>(false)
 
-    fun send(rvalue: ZapData) {
-        value.set(rvalue)
-
-        Thread {
-            val bytes = value.get().toZapString().toByteArray()
-            val packet = DatagramPacket(bytes, bytes.size, serverAddress, PORT)
-            socket.send(packet)
-        }.start()
+    fun send(value: ZapData) {
+        if (!isSending.get()) {
+            Thread {
+                isSending.set(true)
+                val bytes = value.toZapString().toByteArray()
+                val packet = DatagramPacket(bytes, bytes.size, serverAddress, PORT)
+                socket.send(packet)
+                isSending.set(false)
+            }.start()
+        }
     }
 
     fun stop() {
