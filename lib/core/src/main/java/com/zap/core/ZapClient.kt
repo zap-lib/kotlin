@@ -1,11 +1,11 @@
-package com.zap.zap_example.lib
+package com.zap.core
 
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
 import java.util.concurrent.atomic.AtomicReference
 
-class ZapClient {
+class ZapClient(private val serverAddress: InetAddress) {
     private val socket = DatagramSocket()
     private val value = AtomicReference<ZapData>()
 
@@ -13,8 +13,8 @@ class ZapClient {
         value.set(rvalue)
 
         Thread {
-            val bytes = value.get().toJson().toByteArray()
-            val packet = DatagramPacket(bytes, bytes.size, IP, PORT)
+            val bytes = value.get().toZapString().toByteArray()
+            val packet = DatagramPacket(bytes, bytes.size, serverAddress, PORT)
             socket.send(packet)
         }.start()
     }
@@ -24,8 +24,6 @@ class ZapClient {
     }
 
     companion object {
-        private val TAG = ZapClient::class.java.simpleName
-        private val IP = InetAddress.getByName("192.168.0.22")
         private const val PORT = 65500
     }
 }

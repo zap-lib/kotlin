@@ -1,12 +1,9 @@
-package com.zap.zap_example.lib
+package com.zap.core
 
 import android.util.Log
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.util.concurrent.atomic.AtomicBoolean
-
-data class ZapGps(val latitude: Float, val longitude: Float)
-data class ZapAccelerometer(val x: Float, val y: Float, val z: Float)
 
 open class ZapServer {
     private var id = "unknown"
@@ -19,9 +16,9 @@ open class ZapServer {
 
         while (true) {
             socket.receive(packet)
-            // TODO: Check the resource type
-            onAccelerometerChanged(id, packet.data.decodeToString())
-            Thread.sleep(30L)
+            when (val decoded = packet.data.decodeToString().toZapData()) {
+                is ZapAccelerometerData -> onAccelerometerChanged(id, decoded.x, decoded.y)
+            }
         }
     }
 
@@ -35,11 +32,7 @@ open class ZapServer {
         thread.interrupt()
     }
 
-    open fun onGpsChanged(id: String, value: ZapGps) {
-        Log.w(TAG, "Not yet implemented")
-    }
-
-    open fun onAccelerometerChanged(id: String, value: String) {
+    open fun onAccelerometerChanged(id: String, x: Int, y: Int) {
         Log.w(TAG, "Not yet implemented")
     }
 
