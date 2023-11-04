@@ -9,10 +9,10 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.zap.zap_example.lib.ZapClient
-import com.zap.zap_example.lib.ZapData
-import com.zap.zap_example.lib.ZapResource
+import com.zap.core.ZapAccelerometerData
+import com.zap.core.ZapClient
 import com.zap.zap_example.widgets.PlaygroundView
+import java.net.InetAddress
 
 class ControllerActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var control: PlaygroundView
@@ -28,14 +28,14 @@ class ControllerActivity : AppCompatActivity(), SensorEventListener {
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-        zap = ZapClient()
+        zap = ZapClient(InetAddress.getByName("192.168.0.22"))
     }
 
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
             control.x = event.values[0] * -30
             control.y = event.values[1] * 30
-            zap.send(ZapData(ZapResource.ACCELEROMETER, event.values.joinToString(",")))
+            zap.send(ZapAccelerometerData(event.values[0].toInt(), event.values[1].toInt()))
         }
     }
 
