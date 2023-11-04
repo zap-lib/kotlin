@@ -1,6 +1,6 @@
 package com.zap.core
 
-import android.util.Log
+import java.lang.Exception
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.util.concurrent.atomic.AtomicBoolean
@@ -33,11 +33,10 @@ open class ZapServer {
     }
 
     open fun onAccelerometerChanged(id: String, x: Int, y: Int) {
-        Log.w(TAG, "Not yet implemented")
+        throw Exception("Not yet implemented")
     }
 
     companion object {
-        private val TAG = ZapServer::class.java.simpleName
         private const val PORT = 65500
     }
 }
