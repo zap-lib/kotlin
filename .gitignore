@@ -144,3 +144,4 @@ replay_pid*
 
 .gradle/
 build/
+local.properties
