@@ -6,7 +6,6 @@ import java.net.DatagramSocket
 import java.util.concurrent.atomic.AtomicBoolean
 
 open class ZapServer {
-    private var id = "unknown"
     private var isRunning = AtomicBoolean(false)
 
     private val thread = Thread {
@@ -16,8 +15,9 @@ open class ZapServer {
 
         while (true) {
             socket.receive(packet)
-            when (val decoded = packet.data.decodeToString().toZapData()) {
-                is ZapAccelerometerData -> onAccelerometerChanged(id, decoded.x, decoded.y)
+            val received = packet.data.decodeToString().toZapData()
+            when (val data = received.data) {
+                is ZapAccelerometerData -> onAccelerometerChanged(received.uuid, data.x, data.y)
             }
         }
     }
@@ -32,9 +32,25 @@ open class ZapServer {
         thread.interrupt()
     }
 
-    open fun onAccelerometerChanged(id: String, x: Int, y: Int) {
+    open fun onAccelerometerChanged(uuid: String, x: Int, y: Int) {
         throw Exception("Not yet implemented")
     }
+
+    /**
+     * Parses [ZapString] to [ZapData].
+     */
+    private fun ZapString.toZapData(): ZapDataFromClient {
+        val (uuid, resource, value) = this.split(";")
+        return when (resource) {
+            ZapResource.ACCELEROMETER.key -> {
+                val (x, y) = value.split(",").map { it.toInt() }
+                ZapDataFromClient(uuid, ZapAccelerometerData(x, y))
+            }
+            else -> throw Exception("Unknown Zap resource")
+        }
+    }
+
+    private data class ZapDataFromClient(val uuid: String, val data: ZapData)
 
     companion object {
         private const val PORT = 65500
