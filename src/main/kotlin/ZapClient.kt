@@ -1,5 +1,8 @@
-package com.zap.core
+package com.zap_lib.core
 
+import com.zap_lib.core.models.ZapDatagram
+import com.zap_lib.core.models.ZapHeader
+import com.zap_lib.core.models.Zapable
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
@@ -7,18 +10,24 @@ import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
 
 class ZapClient(private val serverAddress: InetAddress) {
-    val uuid = UUID.randomUUID().toString()
+    val id = UUID.randomUUID().toString()
 
     private val socket = DatagramSocket()
     private val isSending = AtomicReference(false)
 
-    fun send(data: ZapData) {
+    fun send(obj: Zapable) {
         if (!isSending.get()) {
             Thread {
                 isSending.set(true)
-                val bytes = data.toZapString().toByteArray()
+
+                val bytes = ZapDatagram(
+                    header = ZapHeader(id, obj.resource),
+                    payload = obj.toPayload(),
+                ).toString().toByteArray()
+
                 val packet = DatagramPacket(bytes, bytes.size, serverAddress, PORT)
                 socket.send(packet)
+
                 isSending.set(false)
             }.start()
         }
@@ -26,20 +35,6 @@ class ZapClient(private val serverAddress: InetAddress) {
 
     fun stop() {
         socket.close()
-    }
-
-    /**
-     * Converts [ZapData] to [ZapString].
-     *
-     * - [ZapAccelerometerData] has the following format: [ACC](ZapResource.ACCELEROMETER);[x](ZapAccelerometerData.x),[y](ZapAccelerometerData.y) (e.g., `ACC;107,42`)
-     */
-    private fun ZapData.toZapString(): ZapString {
-        val payload = when (this) {
-            is ZapAccelerometerData -> "${ZapResource.ACCELEROMETER.key};${this.x},${this.y}"
-            else -> throw Exception("Unknown Zap resource")
-        }
-
-        return "$uuid;$payload"
     }
 
     companion object {

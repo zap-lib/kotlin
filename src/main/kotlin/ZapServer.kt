@@ -1,28 +1,37 @@
-package com.zap.core
+package com.zap_lib.core
 
+import com.zap_lib.core.models.ZapDatagram
+import com.zap_lib.core.resources.ZapAccelerometer
+import com.zap_lib.core.resources.ZapResource
 import java.lang.Exception
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.util.concurrent.atomic.AtomicBoolean
 
 open class ZapServer {
+    private var port: Int = DEFAULT_PORT
+
     private var isRunning = AtomicBoolean(false)
 
     private val thread = Thread {
-        val socket = DatagramSocket(PORT)
+        val socket = DatagramSocket(this.port)
         val buffer = ByteArray(2048)
         val packet = DatagramPacket(buffer, buffer.size)
 
-        while (true) {
+        while (isRunning.get()) {
             socket.receive(packet)
-            val received = packet.data.decodeToString().toZapData()
-            when (val data = received.data) {
-                is ZapAccelerometerData -> onAccelerometerChanged(received.uuid, data.x, data.y)
+            val (header, payload) = ZapDatagram.from(packet.data.decodeToString())
+            when (header.resource) {
+                ZapResource.ACCELEROMETER -> {
+                    val (x, y, z) = ZapAccelerometer.fromPayload(payload)
+                    onAccelerometerChanged(header.id, x, y, z)
+                }
             }
         }
     }
 
-    fun start() {
+    fun listen(port: Int = DEFAULT_PORT) {
+        this.port = port
         isRunning.set(true)
         thread.start()
     }
@@ -32,27 +41,11 @@ open class ZapServer {
         thread.interrupt()
     }
 
-    open fun onAccelerometerChanged(uuid: String, x: Int, y: Int) {
+    open fun onAccelerometerChanged(id: String, x: Float, y: Float, z: Float) {
         throw Exception("Not yet implemented")
     }
 
-    /**
-     * Parses [ZapString] to [ZapData].
-     */
-    private fun ZapString.toZapData(): ZapDataFromClient {
-        val (uuid, resource, value) = this.split(";")
-        return when (resource) {
-            ZapResource.ACCELEROMETER.key -> {
-                val (x, y) = value.split(",").map { it.toInt() }
-                ZapDataFromClient(uuid, ZapAccelerometerData(x, y))
-            }
-            else -> throw Exception("Unknown Zap resource")
-        }
-    }
-
-    private data class ZapDataFromClient(val uuid: String, val data: ZapData)
-
     companion object {
-        private const val PORT = 65500
+        private const val DEFAULT_PORT = 65500
     }
 }
