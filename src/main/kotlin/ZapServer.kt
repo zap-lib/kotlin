@@ -3,6 +3,7 @@ package com.zap_lib.core
 import com.zap_lib.core.models.ZapDatagram
 import com.zap_lib.core.resources.ZapAccelerometer
 import com.zap_lib.core.resources.ZapResource
+import com.zap_lib.core.resources.ZapUiComponent
 import java.lang.Exception
 import java.net.DatagramPacket
 import java.net.DatagramSocket
@@ -26,6 +27,10 @@ open class ZapServer {
                     val (x, y, z) = ZapAccelerometer.fromPayload(payload)
                     onAccelerometerChanged(header.id, x, y, z)
                 }
+                ZapResource.UI_COMPONENT -> {
+                    val (id, event, value) = ZapUiComponent.fromPayload(payload)
+                    onUIComponentChanged(id, event, value)
+                }
             }
         }
     }
@@ -42,6 +47,10 @@ open class ZapServer {
     }
 
     open fun onAccelerometerChanged(id: String, x: Float, y: Float, z: Float) {
+        throw Exception("Not yet implemented")
+    }
+
+    open fun onUIComponentChanged(id: String, event: ZapUiComponent.Event, value: String? = null) {
         throw Exception("Not yet implemented")
     }
 
