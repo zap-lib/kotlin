@@ -3,24 +3,25 @@ package com.zap_lib.core.resources
 import com.zap_lib.core.models.DeZapable
 import com.zap_lib.core.models.ZapPayload
 import com.zap_lib.core.models.Zapable
+import com.zap_lib.core.models.appendIfNotNull
 
 class ZapUiComponent(
-    val id: String,
+    val code: String,
     val event: Event,
     val value: String? = null,
 ) : Zapable {
     override val resource: ZapResource = ZapResource.UI_COMPONENT
 
-    override fun toPayload(): ZapPayload = "$id,${event.key},$value"
+    override fun toPayload(): ZapPayload = "$code,${event.key}".appendIfNotNull(value)
 
-    operator fun component1(): String = id
+    operator fun component1(): String = code
     operator fun component2(): Event = event
     operator fun component3(): String? = value
 
     companion object : DeZapable {
         override fun fromPayload(payload: ZapPayload): ZapUiComponent {
-            val (id, event, value) = payload.split(",")
-            return ZapUiComponent(id, Event.from(event), value)
+            val (code, event, value) = payload.split(",")
+            return ZapUiComponent(code, Event.from(event), value)
         }
     }
 

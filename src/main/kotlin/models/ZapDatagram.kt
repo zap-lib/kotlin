@@ -12,6 +12,8 @@ class ZapHeader(
 }
 
 typealias ZapPayload = String
+fun <T> ZapPayload.appendIfNotNull(x: T?, delimiter: String = ","): ZapPayload =
+    x?.let {  "$this$delimiter$x" } ?: this
 
 class ZapDatagram(
     val header: ZapHeader,

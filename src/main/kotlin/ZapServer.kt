@@ -28,8 +28,8 @@ open class ZapServer {
                     onAccelerometerChanged(header.id, x, y, z)
                 }
                 ZapResource.UI_COMPONENT -> {
-                    val (id, event, value) = ZapUiComponent.fromPayload(payload)
-                    onUIComponentChanged(id, event, value)
+                    val (code, event, value) = ZapUiComponent.fromPayload(payload)
+                    onUIComponentChanged(header.id, code, event, value)
                 }
             }
         }
@@ -50,7 +50,7 @@ open class ZapServer {
         throw Exception("Not yet implemented")
     }
 
-    open fun onUIComponentChanged(id: String, event: ZapUiComponent.Event, value: String? = null) {
+    open fun onUIComponentChanged(id: String, code: String, event: ZapUiComponent.Event, value: String? = null) {
         throw Exception("Not yet implemented")
     }
 
