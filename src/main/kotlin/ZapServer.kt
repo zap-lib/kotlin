@@ -3,10 +3,12 @@ package com.zap_lib.core
 import com.zap_lib.core.models.ZapDatagram
 import com.zap_lib.core.resources.ZapAccelerometer
 import com.zap_lib.core.resources.ZapResource
+import com.zap_lib.core.resources.ZapText
 import com.zap_lib.core.resources.ZapUiComponent
 import java.lang.Exception
 import java.net.DatagramPacket
 import java.net.DatagramSocket
+import java.nio.charset.Charset
 import java.util.concurrent.atomic.AtomicBoolean
 
 open class ZapServer {
@@ -31,6 +33,10 @@ open class ZapServer {
                     val (code, event, value) = ZapUiComponent.fromPayload(payload)
                     onUIComponentChanged(header.id, code, event, value)
                 }
+                ZapResource.TEXT -> {
+                    val (str, charset) = ZapText.fromPayload(payload)
+                    onTextReceived(header.id, str, charset)
+                }
             }
         }
     }
@@ -51,6 +57,10 @@ open class ZapServer {
     }
 
     open fun onUIComponentChanged(id: String, code: String, event: ZapUiComponent.Event, value: String? = null) {
+        throw Exception("Not yet implemented")
+    }
+
+    open fun onTextReceived(id: String, str: String, charset: Charset) {
         throw Exception("Not yet implemented")
     }
 
