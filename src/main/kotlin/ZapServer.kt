@@ -4,7 +4,7 @@ import com.zap_lib.core.models.ZapDatagram
 import com.zap_lib.core.resources.ZapAccelerometer
 import com.zap_lib.core.resources.ZapResource
 import com.zap_lib.core.resources.ZapText
-import com.zap_lib.core.resources.ZapUiComponent
+import com.zap_lib.core.resources.ZapUiEvent
 import java.lang.Exception
 import java.net.DatagramPacket
 import java.net.DatagramSocket
@@ -29,9 +29,9 @@ open class ZapServer {
                     val (x, y, z) = ZapAccelerometer.fromPayload(payload)
                     onAccelerometerChanged(header.id, x, y, z)
                 }
-                ZapResource.UI_COMPONENT -> {
-                    val (code, event, value) = ZapUiComponent.fromPayload(payload)
-                    onUIComponentChanged(header.id, code, event, value)
+                ZapResource.UI_EVENT -> {
+                    val (uiId, event, value) = ZapUiEvent.fromPayload(payload)
+                    onUIEventReceived(header.id, uiId, event, value)
                 }
                 ZapResource.TEXT -> {
                     val (str, charset) = ZapText.fromPayload(payload)
@@ -56,7 +56,7 @@ open class ZapServer {
         throw Exception("Not yet implemented")
     }
 
-    open fun onUIComponentChanged(id: String, code: String, event: ZapUiComponent.Event, value: String? = null) {
+    open fun onUIEventReceived(id: String, uiId: String, event: ZapUiEvent.Event, value: String? = null) {
         throw Exception("Not yet implemented")
     }
 
