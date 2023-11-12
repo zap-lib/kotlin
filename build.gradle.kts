@@ -1,9 +1,10 @@
 plugins {
     kotlin("jvm") version "1.9.20"
+    `maven-publish`
     application
 }
 
-group = "io.github.zap-lib"
+group = "com.github.zap_lib"
 version = "0.1.0"
 
 repositories {
