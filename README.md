@@ -12,6 +12,46 @@ The main goal of Zap is to support mobile-PC communication, but it also extends 
 
 If you want to learn more about Zap, please read the documentation: https://zap-lib.github.io/
 
+## Setup
+
+The latest release is available on [JitPack](https://jitpack.io/#zap-lib/kotlin).
+
+### Gradle
+
+```kotlin
+dependencyResolutionManagement {
+  repositories {
+    // ...
+    maven { url 'https://jitpack.io' }
+  }
+}
+```
+
+```kotlin
+dependencies {
+  implementation 'com.github.zap-lib:kotlin:0.1.0'
+}
+```
+
+### Maven
+
+```xml
+<repositories>
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
+</repositories>
+```
+
+```xml
+<dependency>
+  <groupId>com.github.zap-lib</groupId>
+  <artifactId>kotlin</artifactId>
+  <version>0.1.0</version>
+</dependency>
+```
+
 ## Usage
 
 A client can transmit data obtained from their local data sources to remote device. The following code is an example of sending values obtained from an accelerometer sensor on an Android mobile device to the server.
