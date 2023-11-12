@@ -1,8 +1,10 @@
-import models.ZapDatagram
-import resources.ZapAccelerometer
-import resources.ZapResource
-import resources.ZapText
-import resources.ZapUiEvent
+package com.github.zap_lib
+
+import com.github.zap_lib.models.ZapDatagram
+import com.github.zap_lib.resources.ZapAccelerometer
+import com.github.zap_lib.resources.ZapResource
+import com.github.zap_lib.resources.ZapText
+import com.github.zap_lib.resources.ZapUiEvent
 import java.lang.Exception
 import java.net.DatagramPacket
 import java.net.DatagramSocket

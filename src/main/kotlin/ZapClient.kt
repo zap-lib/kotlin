@@ -1,6 +1,8 @@
-import models.ZapDatagram
-import models.ZapHeader
-import models.Zapable
+package com.github.zap_lib
+
+import com.github.zap_lib.models.ZapDatagram
+import com.github.zap_lib.models.ZapHeader
+import com.github.zap_lib.models.Zapable
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress

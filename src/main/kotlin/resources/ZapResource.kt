@@ -1,4 +1,4 @@
-package resources
+package com.github.zap_lib.resources
 
 /**
  * A registry of resources supported by Zap and their identification values.

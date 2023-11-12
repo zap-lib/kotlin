@@ -1,9 +1,9 @@
-package resources
+package com.github.zap_lib.resources
 
-import models.DeZapable
-import models.ZapPayload
-import models.Zapable
-import models.appendIfNotNull
+import com.github.zap_lib.models.DeZapable
+import com.github.zap_lib.models.ZapPayload
+import com.github.zap_lib.models.Zapable
+import com.github.zap_lib.models.appendIfNotNull
 
 class ZapUiEvent(
     val uiId: String,

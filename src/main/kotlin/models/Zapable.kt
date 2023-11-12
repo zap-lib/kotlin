@@ -1,6 +1,6 @@
-package models
+package com.github.zap_lib.models
 
-import resources.ZapResource
+import com.github.zap_lib.resources.ZapResource
 
 /**
  * An interface for data exchange through Zap. Data objects exchanged via Zap MUST implement
