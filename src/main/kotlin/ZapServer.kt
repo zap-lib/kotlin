@@ -11,6 +11,9 @@ import java.net.DatagramSocket
 import java.nio.charset.Charset
 import java.util.concurrent.atomic.AtomicBoolean
 
+/**
+ * A server that receives data from client.
+ */
 open class ZapServer {
     private var port: Int = DEFAULT_PORT
 
@@ -41,25 +44,42 @@ open class ZapServer {
         }
     }
 
+    /**
+     * Start listening the transmitted data from clients on the given port.
+     *
+     * @param port - A port number for receiving data (default: `65500`).
+     */
     fun listen(port: Int = DEFAULT_PORT) {
         this.port = port
         isRunning.set(true)
         thread.start()
     }
 
+    /**
+     * Stop listening to clients.
+     */
     fun stop() {
         isRunning.set(false)
         thread.interrupt()
     }
 
+    /**
+     * A callback function called whenever accelerometer sensor data is received.
+     */
     open fun onAccelerometerChanged(id: String, x: Float, y: Float, z: Float) {
         throw Exception("Not yet implemented")
     }
 
+    /**
+     * A callback function called whenever UI event data is received.
+     */
     open fun onUIEventReceived(id: String, uiId: String, event: ZapUiEvent.Event, value: String? = null) {
         throw Exception("Not yet implemented")
     }
 
+    /**
+     * A callback function called whenever text data is received.
+     */
     open fun onTextReceived(id: String, str: String, charset: Charset) {
         throw Exception("Not yet implemented")
     }

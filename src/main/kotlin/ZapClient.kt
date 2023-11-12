@@ -9,12 +9,22 @@ import java.net.InetAddress
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
 
+/**
+ * A client that sends data to server.
+ *
+ * @property serverAddress - An IP address of the device running ZapServer.
+ */
 class ZapClient(private val serverAddress: InetAddress) {
     val id = UUID.randomUUID().toString()
 
     private val socket = DatagramSocket()
     private val isSending = AtomicReference(false)
 
+    /**
+     * Send given Zapable object to the server.
+     *
+     * @param obj - An object to send.
+     */
     fun send(obj: Zapable) {
         if (!isSending.get()) {
             Thread {
@@ -33,6 +43,9 @@ class ZapClient(private val serverAddress: InetAddress) {
         }
     }
 
+    /**
+     * Close the socket.
+     */
     fun stop() {
         socket.close()
     }

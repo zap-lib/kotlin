@@ -1,5 +1,8 @@
 package com.zap_lib.core.resources
 
+/**
+ * A registry of resources supported by Zap and their identification values.
+ */
 enum class ZapResource(val key: String) {
     ACCELEROMETER("ACC"),
     UI_EVENT("UIE"),
