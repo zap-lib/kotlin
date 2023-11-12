@@ -1,9 +1,9 @@
-package com.zap_lib.core.resources
+package resources
 
-import com.zap_lib.core.models.DeZapable
-import com.zap_lib.core.models.ZapPayload
-import com.zap_lib.core.models.Zapable
-import com.zap_lib.core.models.appendIfNotNull
+import models.DeZapable
+import models.ZapPayload
+import models.Zapable
+import models.appendIfNotNull
 
 class ZapUiEvent(
     val uiId: String,

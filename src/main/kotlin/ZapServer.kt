@@ -1,10 +1,8 @@
-package com.zap_lib.core
-
-import com.zap_lib.core.models.ZapDatagram
-import com.zap_lib.core.resources.ZapAccelerometer
-import com.zap_lib.core.resources.ZapResource
-import com.zap_lib.core.resources.ZapText
-import com.zap_lib.core.resources.ZapUiEvent
+import models.ZapDatagram
+import resources.ZapAccelerometer
+import resources.ZapResource
+import resources.ZapText
+import resources.ZapUiEvent
 import java.lang.Exception
 import java.net.DatagramPacket
 import java.net.DatagramSocket

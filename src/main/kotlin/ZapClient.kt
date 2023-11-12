@@ -1,8 +1,6 @@
-package com.zap_lib.core
-
-import com.zap_lib.core.models.ZapDatagram
-import com.zap_lib.core.models.ZapHeader
-import com.zap_lib.core.models.Zapable
+import models.ZapDatagram
+import models.ZapHeader
+import models.Zapable
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress

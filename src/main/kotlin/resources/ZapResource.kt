@@ -1,4 +1,4 @@
-package com.zap_lib.core.resources
+package resources
 
 /**
  * A registry of resources supported by Zap and their identification values.

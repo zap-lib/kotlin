@@ -1,8 +1,8 @@
-package com.zap_lib.core.resources
+package resources
 
-import com.zap_lib.core.models.DeZapable
-import com.zap_lib.core.models.ZapPayload
-import com.zap_lib.core.models.Zapable
+import models.DeZapable
+import models.ZapPayload
+import models.Zapable
 import java.nio.charset.Charset
 import java.net.URLDecoder
 import java.net.URLEncoder

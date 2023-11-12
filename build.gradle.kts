@@ -3,7 +3,7 @@ plugins {
     application
 }
 
-group = "com.zap-lib"
+group = "io.github.zap-lib"
 version = "0.1.0"
 
 repositories {

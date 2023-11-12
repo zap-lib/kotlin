@@ -1,6 +1,6 @@
-package com.zap_lib.core.models
+package models
 
-import com.zap_lib.core.resources.ZapResource
+import resources.ZapResource
 
 /**
  * An interface for data exchange through Zap. Data objects exchanged via Zap MUST implement
