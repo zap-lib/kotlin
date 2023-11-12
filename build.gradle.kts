@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.github.zap_lib"
-version = "0.0.2"
+version = "0.1.0"
 
 repositories {
     mavenCentral()
@@ -28,7 +28,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.github.zap_lib"
             artifactId = "zap-lib"
-            version = "0.0.1"
+            version = "0.1.0"
 
             from(components["kotlin"])
         }
