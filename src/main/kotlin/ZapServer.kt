@@ -1,6 +1,7 @@
 package com.github.zap_lib
 
-import com.github.zap_lib.models.ZapDatagram
+import com.github.zap_lib.models.ZappObject
+import com.github.zap_lib.models.ZappHeader
 import com.github.zap_lib.resources.ZapAccelerometer
 import com.github.zap_lib.resources.ZapResource
 import com.github.zap_lib.resources.ZapText
@@ -8,8 +9,25 @@ import com.github.zap_lib.resources.ZapUiEvent
 import java.lang.Exception
 import java.net.DatagramPacket
 import java.net.DatagramSocket
-import java.nio.charset.Charset
+import java.net.InetAddress
+import java.nio.ByteBuffer
 import java.util.concurrent.atomic.AtomicBoolean
+
+data class DgramInfo(
+    val address: InetAddress,
+    val port: Int,
+)
+
+/**
+ * Meta information of received ZAPP Object.
+ *
+ * @property dgram Datagram information such as address and port.
+ * @property header ZAPP Header.
+ */
+data class MetaInfo(
+    val dgram: DgramInfo,
+    val header: ZappHeader,
+)
 
 /**
  * A server that receives data from client.
@@ -26,20 +44,17 @@ open class ZapServer {
 
         while (isRunning.get()) {
             socket.receive(packet)
-            val (header, payload) = ZapDatagram.from(packet.data.decodeToString())
+
+            val (header, payload) = ZappObject.from(ByteBuffer.wrap(packet.data))
+            val info = MetaInfo(DgramInfo(packet.address, packet.port), header)
+
             when (header.resource) {
-                ZapResource.ACCELEROMETER -> {
-                    val (x, y, z) = ZapAccelerometer.fromPayload(payload)
-                    onAccelerometerChanged(header.id, x, y, z)
-                }
-                ZapResource.UI_EVENT -> {
-                    val (uiId, event, value) = ZapUiEvent.fromPayload(payload)
-                    onUIEventReceived(header.id, uiId, event, value)
-                }
-                ZapResource.TEXT -> {
-                    val (str, charset) = ZapText.fromPayload(payload)
-                    onTextReceived(header.id, str, charset)
-                }
+                ZapResource.ACCELEROMETER ->
+                    onAccelerometerChanged(info, ZapAccelerometer.from(payload))
+                ZapResource.UI_EVENT ->
+                    onUIEventReceived(info, ZapUiEvent.from(payload))
+                ZapResource.TEXT ->
+                    onTextReceived(info, ZapText.from(payload))
             }
         }
     }
@@ -47,7 +62,7 @@ open class ZapServer {
     /**
      * Start listening the transmitted data from clients on the given port.
      *
-     * @param port - A port number for receiving data (default: `65500`).
+     * @param port A port number for receiving data (default: `65500`).
      */
     fun listen(port: Int = DEFAULT_PORT) {
         this.port = port
@@ -66,21 +81,21 @@ open class ZapServer {
     /**
      * A callback function called whenever accelerometer sensor data is received.
      */
-    open fun onAccelerometerChanged(id: String, x: Float, y: Float, z: Float) {
+    open fun onAccelerometerChanged(info: MetaInfo, data: ZapAccelerometer) {
         throw Exception("Not yet implemented")
     }
 
     /**
      * A callback function called whenever UI event data is received.
      */
-    open fun onUIEventReceived(id: String, uiId: String, event: ZapUiEvent.Event, value: String? = null) {
+    open fun onUIEventReceived(info: MetaInfo, data: ZapUiEvent) {
         throw Exception("Not yet implemented")
     }
 
     /**
      * A callback function called whenever text data is received.
      */
-    open fun onTextReceived(id: String, str: String, charset: Charset) {
+    open fun onTextReceived(info: MetaInfo, data: ZapText) {
         throw Exception("Not yet implemented")
     }
 

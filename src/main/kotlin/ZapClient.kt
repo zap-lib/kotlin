@@ -1,39 +1,40 @@
 package com.github.zap_lib
 
-import com.github.zap_lib.models.ZapDatagram
-import com.github.zap_lib.models.ZapHeader
+import com.github.zap_lib.models.ZappObject
+import com.github.zap_lib.models.ZappHeader
 import com.github.zap_lib.models.Zapable
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
-import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
 
 /**
  * A client that sends data to server.
  *
- * @property serverAddress - An IP address of the device running ZapServer.
+ * @property serverAddress An IP address of the device running ZapServer.
  */
 class ZapClient(private val serverAddress: InetAddress) {
-    val id = UUID.randomUUID().toString()
-
     private val socket = DatagramSocket()
     private val isSending = AtomicReference(false)
 
     /**
-     * Send given Zapable object to the server.
+     * Send given [Zapable] object to the server.
      *
-     * @param obj - An object to send.
+     * @param obj An object to send.
      */
     fun send(obj: Zapable) {
         if (!isSending.get()) {
             Thread {
                 isSending.set(true)
 
-                val bytes = ZapDatagram(
-                    header = ZapHeader(id, obj.resource),
+                val byteBuffer = ZappObject(
+                    header = ZappHeader(obj.resource),
                     payload = obj.toPayload(),
-                ).toString().toByteArray()
+                ).toByteBuffer()
+                byteBuffer.clear()
+
+                val bytes = ByteArray(byteBuffer.capacity())
+                byteBuffer.get(bytes)
 
                 val packet = DatagramPacket(bytes, bytes.size, serverAddress, PORT)
                 socket.send(packet)

@@ -3,21 +3,27 @@ package com.github.zap_lib.models
 import com.github.zap_lib.resources.ZapResource
 
 /**
- * An interface for data exchange through Zap. Data objects exchanged via Zap MUST implement
- * this interface. If an object can be transmitted through Zap, it can be referred to as “Zapable”.
+ * An interface for data exchange through Zap.
+ *
+ * The data objects exchanged via Zap MUST implement this interface.
+ * If an object can be transmitted through Zap, it can be referred to as “Zapable”.
+ *
+ * @property resource A resource type of the object.
  */
 interface Zapable {
     val resource: ZapResource
 
     /**
-     * Convert [Zapable] to [ZapPayload] and return it.
+     * Convert [Zapable] to [ZappPayload] and return it.
      */
-    fun toPayload(): ZapPayload
+    fun toPayload(): ZappPayload
 }
 
 interface DeZapable {
     /**
-     * Converts and returns [Zapable] object from ZapPayload.
+     * Decode and return [Zapable] object from [ZappPayload].
+     *
+     * @param payload A payload to decode to [Zapable] object.
      */
-    fun fromPayload(payload: ZapPayload): Zapable
+    fun from(payload: ZappPayload): Zapable
 }
