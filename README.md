@@ -82,13 +82,13 @@ On the server side, the values sent by the client can be easily received and use
 ```kotlin
 fun main() {
   // Create and start a new zap server to listen for data from clients.
-  (object : ZapServer() {
+  object : ZapServer() {
     // Define the method that is called whenever accelerometer sensor data is
     // received from client devices.
-    override fun onAccelerometerChanged(uuid: String, x: Float, y: Float, z: Float) {
-      println("Data received from $id (x: $x, y: $y, z: $z)")
+    override fun onAccelerometerChanged(info: MetaInfo, data: ZapAccelerometer) {
+      println("Data received from ${info.dgram.address}, (${data.x}, ${data.y}, ${data.z})")
     }
-  }).listen()
+  }.listen()
 }
 ```
 
