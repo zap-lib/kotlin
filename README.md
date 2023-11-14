@@ -21,7 +21,6 @@ The latest release is available on [JitPack](https://jitpack.io/#zap-lib/kotlin)
 ```kotlin
 dependencyResolutionManagement {
   repositories {
-    // ...
     maven { url 'https://jitpack.io' }
   }
 }
@@ -29,7 +28,7 @@ dependencyResolutionManagement {
 
 ```kotlin
 dependencies {
-  implementation 'com.github.zap-lib:kotlin:0.1.0'
+  implementation 'com.github.zap-lib:kotlin:0.2.0'
 }
 ```
 
@@ -48,7 +47,7 @@ dependencies {
 <dependency>
   <groupId>com.github.zap-lib</groupId>
   <artifactId>kotlin</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
 </dependency>
 ```
 
