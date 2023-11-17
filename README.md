@@ -6,7 +6,7 @@ Zap is a development library for building multi-device application that enable c
 
 The data sources available on mobile devices are valuable, but are often device-dependent, limiting their widespread use. To get over this limitation, Zap provides programming interface to access data sources on other devices. Imagine if PCs could use the series of data from the accelerometer sensor on a mobile device. A simple example is using smartphone as motion controller for PC.
 
-<video src="https://user-images.githubusercontent.com/6410412/281803373-bd6b55e0-65cd-421a-9504-5df169d31c03.mp4" muted controls></video>
+<video src="https://user-images.githubusercontent.com/6410412/283820914-3d29fa2c-ce84-4be2-9536-0dc32316f9fa.mp4" muted controls></video>
 
 The main goal of Zap is to support mobile-PC communication, but it also extends its capabilities to enable mobile-mobile and PC-PC communication. Furthermore, it's not limited to PCs; any devices capable of running Zap implementations(e.g., Kiosk device, Smart TV, etc.) can also participate in this communication.
 
