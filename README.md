@@ -28,7 +28,7 @@ dependencyResolutionManagement {
 
 ```kotlin
 dependencies {
-  implementation 'com.github.zap-lib:kotlin:0.2.0'
+  implementation 'com.github.zap-lib:kotlin:0.3.0'
 }
 ```
 
@@ -47,7 +47,7 @@ dependencies {
 <dependency>
   <groupId>com.github.zap-lib</groupId>
   <artifactId>kotlin</artifactId>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
 </dependency>
 ```
 
@@ -84,7 +84,7 @@ fun main() {
   object : ZapServer() {
     // Define the method that is called whenever accelerometer sensor data is
     // received from client devices.
-    override fun onAccelerometerChanged(info: MetaInfo, data: ZapAccelerometer) {
+    override fun onAccelerometerReceived(info: MetaInfo, data: ZapAccelerometer) {
       println("Data received from ${info.dgram.address}, (${data.x}, ${data.y}, ${data.z})")
     }
   }.listen()

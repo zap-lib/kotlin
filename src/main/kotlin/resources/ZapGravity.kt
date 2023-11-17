@@ -1,13 +1,13 @@
 package com.github.zap_lib.resources
 
 import com.github.zap_lib.models.DeZapable
-import com.github.zap_lib.models.ZappPayload
 import com.github.zap_lib.models.Zapable
+import com.github.zap_lib.models.ZappPayload
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
 /**
- * Represent values measured by accelerometer sensor.
+ * Represent the force of gravity that is applied to a device.
  *
  * ```text
  * +-------------+-------------+-------------+
@@ -15,16 +15,12 @@ import java.nio.ByteOrder
  * +-------------+-------------+-------------+
  * ```
  *
- * @property x Acceleration force along the x axis. (m/s²)
- * @property y Acceleration force along the y axis. (m/s²)
- * @property z Acceleration force along the z axis. (m/s²)
+ * @property x Force of gravity along the x axis. (m/s²)
+ * @property y Force of gravity along the y axis. (m/s²)
+ * @property z Force of gravity along the z axis. (m/s²)
  */
-class ZapAccelerometer(
-    val x: Float,
-    val y: Float,
-    val z: Float,
-) : Zapable {
-    override val resource: ZapResource = ZapResource.ACCELEROMETER
+class ZapGravity(val x: Float, val y: Float, val z: Float) : Zapable {
+    override val resource: ZapResource = ZapResource.GRAVITY
 
     override fun toPayload(): ZappPayload =
         ByteBuffer.allocate(SIZE_BYTES)
@@ -39,13 +35,13 @@ class ZapAccelerometer(
     operator fun component3(): Float = z
 
     companion object : DeZapable {
-        const val SIZE_BYTES = Float.SIZE_BYTES * 3
+        private const val SIZE_BYTES = Float.SIZE_BYTES * 3
 
-        override fun from(payload: ZappPayload): ZapAccelerometer {
+        override fun from(payload: ZappPayload): ZapGravity {
             val x = payload.float
             val y = payload.float
             val z = payload.float
-            return ZapAccelerometer(x, y, z)
+            return ZapGravity(x, y, z)
         }
     }
 }

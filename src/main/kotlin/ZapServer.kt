@@ -2,10 +2,7 @@ package com.github.zap_lib
 
 import com.github.zap_lib.models.ZappObject
 import com.github.zap_lib.models.ZappHeader
-import com.github.zap_lib.resources.ZapAccelerometer
-import com.github.zap_lib.resources.ZapResource
-import com.github.zap_lib.resources.ZapText
-import com.github.zap_lib.resources.ZapUiEvent
+import com.github.zap_lib.resources.*
 import java.lang.Exception
 import java.net.DatagramPacket
 import java.net.DatagramSocket
@@ -50,7 +47,17 @@ open class ZapServer {
 
             when (header.resource) {
                 ZapResource.ACCELEROMETER ->
-                    onAccelerometerChanged(info, ZapAccelerometer.from(payload))
+                    onAccelerometerReceived(info, ZapAccelerometer.from(payload))
+                ZapResource.GEO_POINT ->
+                    onGeoPointReceived(info, ZapGeoPoint.from(payload))
+                ZapResource.GRAVITY ->
+                    onGravityReceived(info, ZapGravity.from(payload))
+                ZapResource.GYROSCOPE ->
+                    onGyroscopeReceived(info, ZapGyroscope.from(payload))
+                ZapResource.ILLUMINANCE ->
+                    onIlluminanceReceived(info, ZapIlluminance.from(payload))
+                ZapResource.MAGNETIC_FIELD ->
+                    onMagneticFieldReceived(info, ZapMagneticField.from(payload))
                 ZapResource.UI_EVENT ->
                     onUIEventReceived(info, ZapUiEvent.from(payload))
                 ZapResource.TEXT ->
@@ -79,9 +86,44 @@ open class ZapServer {
     }
 
     /**
-     * A callback function called whenever accelerometer sensor data is received.
+     * A callback function called whenever accelerometer data is received.
      */
-    open fun onAccelerometerChanged(info: MetaInfo, data: ZapAccelerometer) {
+    open fun onAccelerometerReceived(info: MetaInfo, data: ZapAccelerometer) {
+        throw Exception("Not yet implemented")
+    }
+
+    /**
+     * A callback function called whenever geological point is received.
+     */
+    open fun onGeoPointReceived(info: MetaInfo, data: ZapGeoPoint) {
+        throw Exception("Not yet implemented")
+    }
+
+    /**
+     * A callback function called whenever gravity data is received.
+     */
+    open fun onGravityReceived(info: MetaInfo, data: ZapGravity) {
+        throw Exception("Not yet implemented")
+    }
+
+    /**
+     * A callback function called whenever gyroscope data is received.
+     */
+    open fun onGyroscopeReceived(info: MetaInfo, data: ZapGyroscope) {
+        throw Exception("Not yet implemented")
+    }
+
+    /**
+     * A callback function called whenever illuminance data is received.
+     */
+    open fun onIlluminanceReceived(info: MetaInfo, data: ZapIlluminance) {
+        throw Exception("Not yet implemented")
+    }
+
+    /**
+     * A callback function called whenever magnetic field data is received.
+     */
+    open fun onMagneticFieldReceived(info: MetaInfo, data: ZapMagneticField) {
         throw Exception("Not yet implemented")
     }
 

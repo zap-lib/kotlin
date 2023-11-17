@@ -21,11 +21,11 @@ class ZappObject(
      * Encode [ZappObject] to [ByteBuffer]. The sequence of bytes is MUST encoded as ZAPP Object.
      */
     fun toByteBuffer(): ByteBuffer {
-        val length = ZappHeader.LENGTH + payload.capacity()
+        val length = ZappHeader.SIZE_BYTES + payload.capacity()
         val buf = ByteBuffer.allocate(length).order(ByteOrder.BIG_ENDIAN)
 
-        header.writeTo(buf) // First bytes is encoded as header part.
-        buf.put(payload)
+        header.writeTo(buf) // First bytes are encoded as header part.
+            .put(payload)
 
         return buf
     }

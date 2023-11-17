@@ -23,16 +23,13 @@ class ZappHeader(
      */
     fun writeTo(buf: ByteBuffer): ByteBuffer {
         buf.clear()
-        buf.putULong(timestamp)
-            .putUByte(resource.key)
-
-        return buf
+        return buf.putULong(timestamp).putUByte(resource.key)
     }
 
     companion object {
-        private const val TIMESTAMP_LENGTH = 8 // 8 bytes for timestamp field.
-        private const val RESOURCE_LENGTH = 1 // 1 byte for resource field.
-        const val LENGTH = TIMESTAMP_LENGTH + RESOURCE_LENGTH
+        private const val TIMESTAMP_SIZE_BYTES = ULong.SIZE_BYTES
+        private const val RESOURCE_SIZE_BYTES = UByte.SIZE_BYTES
+        const val SIZE_BYTES = TIMESTAMP_SIZE_BYTES + RESOURCE_SIZE_BYTES
 
         /**
          * Read bytes from the given [ByteBuffer] and decode it to [ZappHeader].
