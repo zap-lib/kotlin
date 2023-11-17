@@ -10,3 +10,9 @@ typealias ZappPayload = ByteBuffer
 
 fun ZappPayload.readAsString(): String =
     StandardCharsets.UTF_8.decode(this).toString()
+
+fun ZappPayload.toByteArray(size: Int): ByteArray {
+    val bytes = ByteArray(size)
+    this.get(bytes)
+    return bytes
+}
