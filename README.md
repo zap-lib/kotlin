@@ -28,7 +28,7 @@ dependencyResolutionManagement {
 
 ```kotlin
 dependencies {
-  implementation 'com.github.zap-lib:kotlin:0.4.0'
+  implementation 'com.github.zap-lib:kotlin:0.4.1'
 }
 ```
 
@@ -47,7 +47,7 @@ dependencies {
 <dependency>
   <groupId>com.github.zap-lib</groupId>
   <artifactId>kotlin</artifactId>
-  <version>0.4.0</version>
+  <version>0.4.1</version>
 </dependency>
 ```
 

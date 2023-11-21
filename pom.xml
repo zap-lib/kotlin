@@ -6,7 +6,7 @@
 
     <groupId>com.github.zap_lib</groupId>
     <artifactId>zap-lib</artifactId>
-    <version>0.4.0</version>
+    <version>0.4.1</version>
 
     <name>Zap</name>
     <description>An application programming library for building multi-device applications</description>

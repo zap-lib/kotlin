@@ -32,12 +32,14 @@ class ZapUiEvent(
     }
 
     enum class Event(val key: String) {
+        CLICK("CLICK"),
         CLICK_DOWN("CLICK_DOWN"),
         CLICK_UP("CLICK_UP");
 
         companion object {
             fun from(key: String): Event =
                 when (key) {
+                    CLICK.key -> CLICK
                     CLICK_DOWN.key -> CLICK_DOWN
                     CLICK_UP.key -> CLICK_UP
                     else -> throw Exception("Unknown event")
